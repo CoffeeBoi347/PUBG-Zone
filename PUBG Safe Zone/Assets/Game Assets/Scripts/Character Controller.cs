@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 public class CharacterControllerNew : MonoBehaviour
 {
@@ -8,13 +10,17 @@ public class CharacterControllerNew : MonoBehaviour
     public float currentSpeed;
     public CharacterController playerController;
     public float fixSpeed = 1f;
-
+    private const float healthDeduction = 10f;
     [Header("Animator")]
     public Animator playerAnim;
 
     [Header("Booleans")]
     public bool canRun;
     public bool canWalk;
+    public bool deductHealth = false;
+    [Header("Texts")]
+
+    public TMP_Text healthText;
 
     private void Start()
     {
@@ -25,6 +31,12 @@ public class CharacterControllerNew : MonoBehaviour
     private void Update()
     {
         InputControls();
+        healthText.text = "HEALTH: " + healthPlayer;
+
+        if (deductHealth)
+        {
+            healthPlayer -= healthDeduction;
+        }
     }
 
     void InputControls()
@@ -92,4 +104,17 @@ public class CharacterControllerNew : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("SafeZone"))
+        {
+            deductHealth = false;
+            Debug.Log("YAY YOU ARE SAFE..!");
+        }
+        else if (!collision.gameObject.CompareTag("SafeZone"))
+        {
+            deductHealth = true;
+            Debug.Log("NOT REALLY!");
+        }
+    }
 }
