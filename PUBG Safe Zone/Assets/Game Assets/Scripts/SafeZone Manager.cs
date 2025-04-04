@@ -32,4 +32,9 @@ public class SafeZoneManager : MonoBehaviour
             yield return null;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"WELCOME {other}");
+    }
 }
